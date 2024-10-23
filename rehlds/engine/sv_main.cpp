@@ -3783,6 +3783,12 @@ void SV_ProcessFile(client_t *cl, char *filename)
 		return;
 	}
 
+	if (!sv_allow_upload.value)
+	{
+		Con_NetPrintf("Ignoring incoming customization file upload of %s from %s\n", filename, NET_AdrToString(cl->netchan.remote_address));
+		return;
+	}
+
 	COM_HexConvert(filename + 4, 32, md5);
 	resource = cl->resourcesneeded.pNext;
 	bFound = FALSE;
