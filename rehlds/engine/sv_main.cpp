@@ -6076,7 +6076,7 @@ void PrecacheModelSounds(studiohdr_t *pStudioHeader)
 void PrecacheModelSpecifiedFiles()
 {
 	const char **s = &g_psv.model_precache[1];
-	for (size_t i = 1; i < ARRAYSIZE(g_psv.model_precache) && *s != nullptr; i++, s++)
+	for (size_t i = 1; i < ARRAYSIZE(g_psv.model_precache) && *s && g_psv.models[i]; i++, s++)
 	{
 		if (g_psv.models[i]->type != mod_studio)
 			continue;
