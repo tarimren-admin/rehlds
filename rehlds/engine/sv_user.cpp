@@ -939,7 +939,7 @@ void SV_RunCmd(usercmd_t *ucmd, int random_seed)
 	gEntityInterface.pfnPM_Move(pmove, TRUE);
 
 	// Determine whether movevars has changed or not
-	if (Q_memcmp(&movevars, pmove->movevars, sizeof(movevars)) != 0)
+	if (!host_client->fakeclient && Q_memcmp(&movevars, pmove->movevars, sizeof(movevars)) != 0)
 		SV_WriteMovevarsToClient(&host_client->netchan.message, pmove->movevars); // sync movevars for the client
 
 	sv_player->v.deadflag = pmove->deadflag;
