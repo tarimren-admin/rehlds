@@ -276,6 +276,15 @@ typedef struct flow_s
 	float avgkbytespersec;
 } flow_t;
 
+const int NET_DECOMPRESS_MAX_TIMES = 10;
+
+typedef struct frag_decomp_failure_s
+{
+	float failure_times[NET_DECOMPRESS_MAX_TIMES];
+	// Count of abnormal fragment decompressions in a time window
+	int num_failures;
+} frag_decomp_failure_t;
+
 const int FRAGMENT_C2S_MIN_SIZE = 16;
 const int FRAGMENT_S2C_MIN_SIZE = 256;
 const int FRAGMENT_S2C_MAX_SIZE = 1024;
@@ -422,6 +431,10 @@ typedef struct netchan_s
 
 	// Incoming and outgoing flow metrics
 	flow_t flow[MAX_FLOWS];
+
+	// Stats for decompression of incoming fragments
+	frag_decomp_failure_t frag_decompress[MAX_STREAMS];
+
 } netchan_t;
 
 #ifdef REHLDS_FIXES
