@@ -174,10 +174,6 @@ void Netchan_Clear(netchan_t *chan)
 		chan->frag_startpos[i] = 0;
 		chan->frag_length[i] = 0;
 		chan->incomingready[i] = FALSE;
-
-		for (int j = 0; j < NET_DECOMPRESS_MAX_TIMES; j++)
-			chan->frag_decompress[i].failure_times[j] = 0;
-		chan->frag_decompress[i].num_failures = 0;
 	}
 
 	if (chan->tempbuffer)
@@ -191,6 +187,7 @@ void Netchan_Clear(netchan_t *chan)
 void Netchan_Setup(netsrc_t socketnumber, netchan_t *chan, netadr_t adr, int player_slot, void *connection_status, qboolean(*pfnNetchan_Blocksize)(void *))
 {
 	Netchan_Clear(chan);
+	g_GameClients[player_slot]->NetchanClear();
 
 	Q_memset(chan, 0, sizeof(netchan_t));
 
@@ -1460,7 +1457,6 @@ qboolean Netchan_ValidateDecompress(netchan_t *chan, int stream, unsigned int co
 {
 #ifdef REHLDS_FIXES
 	int		i;
-	frag_decomp_failure_t	*decomp;
 
 	if (sv_net_incoming_decompression_max_ratio.value <= 0)
 		return TRUE; // validation is disabled
@@ -1477,24 +1473,24 @@ qboolean Netchan_ValidateDecompress(netchan_t *chan, int stream, unsigned int co
 
 	Netchan_DecompressionCvarsBounds();
 
-	decomp = &chan->frag_decompress[stream];
+	FragStats_t &stats = g_GameClients[chan->player_slot - 1]->GetFragStats(stream);
 
 	// check if the client should be rejected based on total failed decompress
-	if (decomp->num_failures >= sv_net_incoming_decompression_max_failures.value)
+	if (stats.num_decompress_failures >= sv_net_incoming_decompression_max_failures.value)
 	{
 		for (i = 0; i < sv_net_incoming_decompression_max_failures.value - 1; i++)
-			decomp->failure_times[i] = decomp->failure_times[i + 1];
+			stats.decompress_failure_times[i] = stats.decompress_failure_times[i + 1];
 
-		decomp->num_failures = sv_net_incoming_decompression_max_failures.value - 1;
+		stats.num_decompress_failures = sv_net_incoming_decompression_max_failures.value - 1;
 	}
 
-	decomp->failure_times[decomp->num_failures++] = realtime;
+	stats.decompress_failure_times[stats.num_decompress_failures++] = realtime;
 
 	// check if the client should be rejected based on recent failed decompress
 	int recent_failures = 0;
-	for (i = 0; i < decomp->num_failures; i++)
+	for (i = 0; i < stats.num_decompress_failures; i++)
 	{
-		if ((realtime - decomp->failure_times[i]) <= sv_net_incoming_decompression_min_failuretime.value)
+		if ((realtime - stats.decompress_failure_times[i]) <= sv_net_incoming_decompression_min_failuretime.value)
 			recent_failures++;
 	}
 
