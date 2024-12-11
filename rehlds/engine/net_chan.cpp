@@ -1810,7 +1810,7 @@ qboolean Netchan_CopyFileFragments(netchan_t *chan)
 			// malformed data or compressed data exceeding sv_net_incoming_decompression_max_size
 			success = FALSE;
 		}
-		else if (!Netchan_ValidateDecompress(chan, FRAG_NORMAL_STREAM, compressedSize, uncompressedSize))
+		else if (!Netchan_ValidateDecompress(chan, FRAG_FILE_STREAM, compressedSize, uncompressedSize))
 		{
 			success = FALSE;
 		}
