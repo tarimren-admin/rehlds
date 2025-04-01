@@ -421,7 +421,7 @@ void MessageImpl::setParamPrimitive(size_t index, T value, bool sign)
 		break;
 	case IMessage::ParamType::Angle:
 		// Convert angle value to byte representation with loss of precision
-		*(uint8 *)pbuf = (int64)(fmod((double)value, 360.0) * 256.0 / 360.0) & 0xff;
+		setValue<uint8>(pbuf, (int64)(fmod((double)value, 360.0) * 256.0 / 360.0) & 0xff);
 		break;
 	case IMessage::ParamType::Coord:
 		// Convert coordinate value to short integer representation with loss of precision
@@ -1051,7 +1051,7 @@ void EXT_FUNC PF_WriteCoord_Intercept(float flValue)
 
 void EXT_FUNC PF_WriteString_Intercept(const char *sz)
 {
-	if (MessageManager().WriteParam(IMessage::ParamType::String, sz ? Q_strlen(sz) + 1 : 1))
+	if (MessageManager().WriteParam(IMessage::ParamType::String, false, sz ? Q_strlen(sz) + 1 : 1))
 		PF_WriteString_I(sz);
 }
 
