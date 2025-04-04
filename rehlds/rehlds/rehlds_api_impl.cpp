@@ -579,7 +579,7 @@ bool EXT_FUNC SV_EmitSound2_internal(edict_t *entity, IGameClient *pReceiver, in
 	bool bSendPAS = (channel != CHAN_STATIC && !(flags & SND_FL_STOP) && !(emitFlags & SND_EMIT2_NOPAS));
 	vec3_t origin = {0, 0, 0};
 
-	if (entity && entity != g_psv.edicts)
+	if ((!pOrigin || !(emitFlags & SND_EMIT2_USE_ORIGIN)) && entity && entity != g_psv.edicts)
 	{
 		for (int i = 0; i < 3; ++i)
 			origin[i] = (entity->v.maxs[i] + entity->v.mins[i]) * 0.5f + entity->v.origin[i];
