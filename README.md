@@ -1,53 +1,53 @@
 # ReHLDS [![C/C++ CI](https://github.com/rehlds/ReHLDS/actions/workflows/build.yml/badge.svg)](https://github.com/rehlds/ReHLDS/actions/workflows/build.yml) [![GitHub release (by tag)](https://img.shields.io/github/downloads/rehlds/ReHLDS/latest/total)](https://github.com/rehlds/ReHLDS/releases/latest) ![GitHub all releases](https://img.shields.io/github/downloads/rehlds/ReHLDS/total) [![Percentage of issues still open](http://isitmaintained.com/badge/open/rehlds/ReHLDS.svg)](http://isitmaintained.com/project/rehlds/ReHLDS "Percentage of issues still open") [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) <img align="right" src="https://user-images.githubusercontent.com/5860435/111066129-040e5e00-84f0-11eb-9e1f-7a7e8611da2b.png" alt="ReHLDS" />
-Reverse-engineered (and bugfixed) HLDS
+反向工程（并修复了错误）的HLDS
 
-## What is this?
-ReHLDS is a result of reverse engineering of original HLDS (build 6152/6153) using DWARF debug info embedded into linux version of HLDS, engine_i486.so
+## 项目简介
+ReHLDS是通过对HLDS（版本6152/6153）的逆向工程，使用嵌入在HLDS（Linux版本）中的engine_i486.so的DWARF调试信息而得到的结果。
 
-Along with reverse engineering, a lot of defects and (potential) bugs were found and fixed
+除了逆向工程，还发现并修复了许多缺陷和（潜在的）错误。
 
-You can try playing on one of many servers that are using ReHLDS: [Game Tracker](http://www.gametracker.com/search/?search_by=server_variable&search_by2=sv_version)
+可以尝试在服务器使用ReHLDS: [游戏追踪](http://www.gametracker.com/search/?search_by=server_variable&search_by2=sv_version)
 
 > [!TIP]
-> ReHLDS linux-releases now is signed via `GPG`, pubkey is: `63547829004f07716f7be4856c32c4282e60fb67` and could be found at [https://keyserver.ubuntu.com/](https://keyserver.ubuntu.com/pks/lookup?search=63547829004f07716f7be4856c32c4282e60fb67+&fingerprint=on&op=index).
+> ReHLDS linux-releases 现在通过 `GPG`签名, 公钥: `63547829004f07716f7be4856c32c4282e60fb67` 可以在 [https://keyserver.ubuntu.com/](https://keyserver.ubuntu.com/pks/lookup?search=63547829004f07716f7be4856c32c4282e60fb67+&fingerprint=on&op=index)找到.
 >
-> How to:
-> 1. [Download](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x63547829004f07716f7be4856c32c4282e60fb67) `63547829004f07716f7be4856c32c4282e60fb67.asc` key
-> 2. Import: `gpg --import 63547829004f07716f7be4856c32c4282e60fb67.asc`
-> 3. Download release `archive` and `.asc` file.
-> 4. Verify: `gpg --verify some-rehlds.zip.asc some-rehlds.zip`.
+> 如何使用:
+> 1. [下载](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x63547829004f07716f7be4856c32c4282e60fb67) `63547829004f07716f7be4856c32c4282e60fb67.asc` 密钥
+> 2. 导入: `gpg --import 63547829004f07716f7be4856c32c4282e60fb67.asc`
+> 3. 下载发布版 `archive` 和 `.asc` 文件.
+> 4. 校验: `gpg --verify some-rehlds.zip.asc some-rehlds.zip`.
 
-## Goals of the project
+## 项目目标
 <ul>
-<li>Provide more stable (than official) version of Half-Life dedicated server with extended API for mods and plugins</li>
-<li>Performance optimizations (use of SSE for vector math for example) is another goal for the future</li>
+<li>提供更稳定的（比官方版本更稳定）半条命专用服务器版本，带有扩展的API，用于模组和插件</li>
+<li>性能优化（例如使用SSE进行向量数学）是未来的目标</li>
 </ul>
 
-## How can use it?
-ReHLDS is fully compatible with the official pre-anniversary edition of HLDS (engine version <= 8684) downloaded by steamcmd. All you have to do is to download ReHLDS binaries and replace original swds.dll/engine_i486.so. For windows you can also copy a swds.pdb file with a debug information.
+## 如何使用
+ReHLDS与通过steamcmd下载的官方HLDS预周年纪念版（引擎版本<=8684）完全兼容. 只需要下载ReHLDS二进制文件并替换原始swds.dll/engine_i486.so. 对于Windows，还可以复制一个包含调试信息的swds.pdb文件.
 
 > [!CAUTION]  
-> ReHLDS is not compatible with an old 5xxx or below platforms downloaded by hldsupdatetool.
+> ReHLDS不兼容通过hldsupdatetool下载的旧5xxx或更低版本的平台.
 
-#### Downloading HLDS via steamcmd
+#### 通过steamcmd下载HLDS
 
 ```
 app_set_config 90 mod cstrike
 app_update 90 -beta steam_legacy validate
 ```
 
-## Downloads
-* [Release builds](https://github.com/rehlds/ReHLDS/releases)
-* [Dev builds](https://github.com/rehlds/ReHLDS/actions/workflows/build.yml)
+## 下载
+* [发布版本](https://github.com/rehlds/ReHLDS/releases)
+* [开发版本](https://github.com/rehlds/ReHLDS/actions/workflows/build.yml)
 
-ReHLDS binaries require `SSE`, `SSE2` and `SSE3` instruction sets to run and can benefit from `SSE4.1` and `SSE4.2`
+ReHLDS二进制文件需要 `SSE`, `SSE2` 和 `SSE3` 指令集才能运行，且兼容 `SSE4.1` 和 `SSE4.2`
 
-<b>Warning!</b> ReHLDS is not binary compatible with original hlds since it's compiled with compilers other than ones used for original hlds.
-This means that plugins that do binary code analysis (Orpheu for example) probably will not work with ReHLDS.
+<b>警告!</b> ReHLDS与原始hld不兼容.因为它使用原始hld以外的编译器编译.
+这意味着进行二进制代码分析的插件（例如Orpheu）可能无法与ReHLDS配合使用.
 
-## Configuring
+## 设置
 <details>
-<summary>Click to expand</summary>
+<summary>点击展开</summary>
 <ul>
 <li>listipcfgfile &lt;filename&gt; // File for permanent ip bans. Default: listip.cfg
 <li>syserror_logfile &lt;filename&gt; // File for the system error log. Default: sys_error.log
@@ -85,7 +85,7 @@ This means that plugins that do binary code analysis (Orpheu for example) probab
 </ul>
 </details>
 
-## Commands
+## 命令
 <ul>
 <li>rescount // Prints the total count of precached resources in the server console
 <li>reslist &lt;sound | model | decal | generic | event&gt; // Separately prints the details of the precached resources for sounds, models, decals, generic and events in server console. Useful for managing resources and dealing with the goldsource precache limits.
@@ -94,53 +94,53 @@ This means that plugins that do binary code analysis (Orpheu for example) probab
 <li>rcon_users // List all IP addresses and CIDR ranges in RCON user list</li>
 </ul>
 
-## Build instructions
-### Checking requirements
-There are several software requirements for building ReHLDS:
+## 构建说明
+### 环境要求
+构建 ReHLDS 需要一些软件要求:
 
-#### Windows
+#### Windows操作系统
 <pre>
-Visual Studio 2015 (C++14 standard) and later
+Visual Studio 2015（C++14标准）及更新版本
 </pre>
 
-#### Linux
+#### Linux操作系统
 <pre>
 cmake >= 3.10
-GCC >= 4.9.2 (Optional)
-ICC >= 15.0.1 20141023 (Optional)
-LLVM (Clang) >= 6.0 (Optional)
+GCC >= 4.9.2 (可选)
+ICC >= 15.0.1 20141023 (可选)
+LLVM (Clang) >= 6.0 (可选)
 </pre>
 
-### Building
+### 构建
 
-#### Windows
-Use `Visual Studio` to build, open `msvc/ReHLDS.sln` and just select from the solution configurations list `Release Swds` or `Debug Swds`
+#### Windows操作系统
+使用 `Visual Studio` 构建, 打开 `msvc/ReHLDS.sln` 并从解决方案配置列表中选择 `Release Swds` 或 `Debug Swds`
 
-#### Linux
+#### Linux操作系统
 
-* Optional options using `build.sh --compiler=[gcc] --jobs=[N] -D[option]=[ON or OFF]` (without square brackets)
+* 可选选项使用 `build.sh --compiler=[gcc] --jobs=[N] -D[option]=[ON or OFF]` (无需方括号)
 
 <pre>
--c=|--compiler=[icc|gcc|clang]  - Select preferred C/C++ compiler to build
--j=|--jobs=[N]                  - Specifies the number of jobs (commands) to run simultaneously (For faster building)
+-c=|--compiler=[icc|gcc|clang]  - 选择用于构建的首选 C/C++ 编译器
+-j=|--jobs=[N]                  - 指定同时运行的作业（命令）的数量（以加快构建）
 
-<sub>Definitions (-D)</sub>
-DEBUG                           - Enables debugging mode
-USE_STATIC_LIBSTDC              - Enables static linking library libstdc++
+<sub>定义 (-D)</sub>
+DEBUG                           - 启用调试模式
+USE_STATIC_LIBSTDC              - 启用静态链接库 libstdc++
 </pre>
 
 * ICC          <pre>./build.sh --compiler=intel</pre>
 * LLVM (Clang) <pre>./build.sh --compiler=clang</pre>
 * GCC          <pre>./build.sh --compiler=gcc</pre>
 
-##### Checking build environment (Debian / Ubuntu)
+##### 检查构建环境 (Debian / Ubuntu)
 
 <details>
-<summary>Click to expand</summary>
+<summary>点击展开</summary>
 
 <ul>
 <li>
-Installing required packages
+安装所需的软件包
 <pre>
 sudo dpkg --add-architecture i386
 sudo apt-get update
@@ -152,7 +152,7 @@ sudo apt-get install -y cmake
 </li>
 
 <li>
-Select the preferred C/C++ Compiler installation
+选择首选的C/C++编译器
 <pre>
 1) sudo apt-get install -y gcc g++
 2) sudo apt-get install -y clang
@@ -161,6 +161,6 @@ Select the preferred C/C++ Compiler installation
 </ul>
 </details>
 
-## How can I help the project?
-Just install it on your game server and report problems you faced.
-Merge requests are also welcome :)
+## 如何为项目提供支持
+只需将其安装在您的游戏服务器上，并报告遇到的问题.
+也欢迎合并请求 :)
