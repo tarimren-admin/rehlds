@@ -26,7 +26,7 @@ ReHLDS是通过对HLDS（版本6152/6153）的逆向工程，使用嵌入在HLDS
 ## 如何使用
 ReHLDS与通过steamcmd下载的官方HLDS预周年纪念版（引擎版本<=8684）完全兼容. 只需要下载ReHLDS二进制文件并替换原始swds.dll/engine_i486.so. 对于Windows，还可以复制一个包含调试信息的swds.pdb文件.
 
-> [!警告]  
+> [!CAUTION]  
 > ReHLDS不兼容通过hldsupdatetool下载的旧5xxx或更低版本的平台.
 
 #### 通过steamcmd下载HLDS
